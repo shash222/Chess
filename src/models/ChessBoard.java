@@ -161,6 +161,7 @@ public class ChessBoard {
     		locationBoard[result[3]][result[2]] = selected; 
     		selected.moved = true; 
 
+
     	} else {
     		System.out.println("Invalid move per Chess regulations."); 
     		return; 
@@ -196,4 +197,10 @@ public class ChessBoard {
     	}
     	scanner.close(); 
     }
+
+    public Piece[][] getLocationBoard() {
+        return this.locationBoard;
+    }
+
+
 }
