@@ -4,8 +4,6 @@ import models.ChessBoard;
 import models.Pawn;
 import models.Piece;
 
-import java.util.Scanner;
-
 public class Chess {
 
 	private static ChessBoard chessBoard;
