@@ -1,42 +1,23 @@
 package chess;
 
+import models.ChessBoard;
+import models.Pawn;
+import models.Piece;
+
 public class Chess {
 	
-	Piece[][] locationBoard = new Piece[8][8];
-	Chess() {
-		for(int i = 0; i <= 7; i++) {
-			locationBoard[1][i] = new Pawn(1,i,"black"); 
-		}
-		for(int i = 0; i <= 7; i++) {
-			locationBoard[6][i] = new Pawn(1,i,"white"); 
-		}
-	}
-	
-		
-
-	
-	
-	public void printLocationBoard() {
-		for(int i = 0; i < locationBoard.length; i++) {
-			System.out.println(""); 
-			for(int j = 0; j < locationBoard[i].length; j++) {
-				if(locationBoard[i][j] != null) {
-					System.out.print(locationBoard[i][j].name + " "); 
-				} else {
-					System.out.print(" "); 
-				}
-			}
-		}
-	}
-
 	public static void main(String[] args) {
 
-		// System.out.println("Main class"); 
-		Chess chess = new Chess(); 
-		chess.printLocationBoard(); 
-		
-		
-
+		// System.out.println("Main class");
+		ChessBoard chessBoard = new ChessBoard();
+		chessBoard.printLocationBoard();
 	}
+
+	/*
+		All isValidMove methods do not check the desired position if there is a piece there, that should be handled by
+		controller, and remove the piece from the board accordingly
+		In this case, if there is a piece at desired location, and color matches that of piece being moved, immediately
+		alert user of bad move
+	 */
 
 }
