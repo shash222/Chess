@@ -10,7 +10,7 @@ public class Chess {
 
 		// System.out.println("Main class");
 		ChessBoard chessBoard = new ChessBoard();
-		chessBoard.printLocationBoard();
+		chessBoard.play();
 	}
 
 	/*

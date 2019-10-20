@@ -8,14 +8,15 @@ public abstract class Piece {
 	String color;
 	boolean moved;
 
-	Piece(int x, int y, String color) {
+	Piece(int r, int c, String color) {
 		this.isAlive = true;
 		this.color = color; 
-		this.location[0] = x;
-		this.location[1] = y; 
+		this.location[0] = r;
+		this.location[1] = c; 
+		this.moved = false; 
 	}
 	
-	abstract boolean isValidMove(int x, int y, Piece[][] locationBoard);
+	abstract boolean isValidMove(int r, int c, Piece[][] locationBoard);
 
 
 

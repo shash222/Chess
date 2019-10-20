@@ -2,8 +2,8 @@ package models;
 
 public class Pawn extends Piece {
 
-	public Pawn(int x, int y, String color) {
-		super(x,y,color);
+	public Pawn(int r, int c, String color) {
+		super(r,c,color);
   		if(color == "white") {
 			this.name = "wP";
 		} else {
@@ -11,17 +11,18 @@ public class Pawn extends Piece {
 		}
 	}
 
-	boolean isValidMove(int x, int y, Piece[][] locationBoard) {
+	boolean isValidMove(int r, int c, Piece[][] locationBoard) {
 		if (this.color.equals("white")) {
-			if (x == this.location[0] && y == this.location[1] - 1 && locationBoard[y][x] == null) return true;
-			if (x == this.location[0] && y == this.location[1] - 2 && !moved && locationBoard[y][x - 1] == null  && locationBoard[y][x] == null) return true;
-			if (Math.abs(x - this.location[0]) == 1 && y == this.location[1] - 1 && locationBoard[y][x] != null) return true;
+			if (c == this.location[1] && r == this.location[0] - 1 && locationBoard[r][c] == null) 	return true;
+			if (c == this.location[1] && r == this.location[0] - 2 && !moved && locationBoard[r][c - 1] == null  && locationBoard[r][c] == null) return true;
+			if (Math.abs(c - this.location[0]) == 1 && r == this.location[1] - 1 && locationBoard[r][c] != null) return true;
 		} else {
-			if (x == this.location[0] && y == this.location[1] + 1 && locationBoard[y][x] == null) return true;
-			if (x == this.location[0] && y == this.location[1] + 2 && !moved && locationBoard[y][x + 1] == null  && locationBoard[y][x] == null) return true;
-			if (Math.abs(x - this.location[0]) == 1 && y == this.location[1] + 1 && locationBoard[y][x] != null) return true;
+			if (c == this.location[1] && r == this.location[0] + 1 && locationBoard[r][c] == null) return true;
+			if (c == this.location[1] && r == this.location[0] + 2 && !moved && locationBoard[r][c + 1] == null  && locationBoard[r][c] == null) return true;
+			if (Math.abs(c - this.location[1]) == 1 && r == this.location[0] + 1 && locationBoard[r][c] != null) return true;
 		}
 		return false; 
+		
 	}
 	
 	

@@ -2,15 +2,15 @@ package models;
 
 public class King extends Piece{
 
-    King(int x, int y, String color) {
-        super(x, y, color);
+    King(int r, int c, String color) {
+        super(r, c, color);
         this.name = color.equals("white") ? "wK" : "bK";
     }
 
     @Override
-    boolean isValidMove(int x, int y, Piece[][] locationBoard) {
+    boolean isValidMove(int r, int c, Piece[][] locationBoard) {
         // Haven't handled check positions yet
-        if (Math.abs(x - this.location[0]) <= 1 && Math.abs(y - this.location[1]) <= 1) return false;
+        if (Math.abs(r - this.location[0]) <= 1 && Math.abs(c - this.location[1]) <= 1) return true;
         return false;
     }
 }
