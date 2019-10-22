@@ -10,16 +10,14 @@ public class Bishop extends Piece{
     private boolean isBlocked(int r, int c, Piece[][] locationBoard) {
         int incrementX = (r < this.location[0]) ? -1 : 1;
         int incrementY = (c < this.location[1]) ? -1 : 1;
-        for (int i = this.location[0], j = this.location[1]; i != r && j != c; i += incrementX, j += incrementY) {
-            if (locationBoard[j][i] != null) return true;
+        for (int i = this.location[0] + incrementX, j = this.location[1] + incrementY; i != r; i += incrementX, j += incrementY) {
+            if (locationBoard[i][j] != null) return true;
         }
         return false;
     }
 
-
     @Override
     boolean isValidMove(int r, int c, Piece[][] locationBoard) {
-        // Assumes self-selection is already checked
         if (Math.abs(this.location[0] - r) == Math.abs(this.location[1] - c) && !isBlocked(r, c, locationBoard))
             return true;
         return false;
