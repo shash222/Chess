@@ -8,10 +8,6 @@ public class Chess {
 
 	private static ChessBoard chessBoard;
 
-	private static boolean indexHasPiece(int[] indices) {
-		return (chessBoard.getLocationBoard()[indices[0]][indices[1]] != null);
-	}
-
 	private static boolean isInputOutOfBounds(int[] indices) {
 		return (indices[0] < 0 || indices[0] > 7 || indices[1] < 0 || indices[1] > 7);
 	}
