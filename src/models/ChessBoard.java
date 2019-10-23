@@ -171,7 +171,6 @@ public class ChessBoard {
 			selected.moved = true;
 			return true;
 		}
- 		System.out.println("There");
     	return false;
     }
     
