@@ -12,6 +12,8 @@ public class ChessBoard {
 	private Set<Piece> aliveWhitePieces = new HashSet();
 	private Set<Piece> aliveBlackPieces = new HashSet();
 
+	boolean drawRequested = false;
+
 
     public ChessBoard() {
         for(int i = 0; i <= 7; i++) {
@@ -85,44 +87,65 @@ public class ChessBoard {
 
     }
     
-    // Check if input is syntatically valid
-    private boolean checkValidString(String str) {
-    	str = str.replaceAll("\\s+","");
-    	if(str.length() > 4) {
-    		return false; 
-    	}
+    // Check if input is syntactically valid
+    private boolean checkValidString(String input) {
+    	// Splits inputted string by space
+    	String[] splitInput = input.split(" ");
+		// Greater than 3 in case 3rd word is "draw?"
+		if (splitInput.length > 3) {
+			return false;
+		} else if (splitInput.length == 3 && !splitInput[2].equals("draw?")
+					|| splitInput.length == 1 && !splitInput[0].equals("draw")) {
+			return false;
+		} else if (splitInput[0].equals("draw") && drawRequested) {
+			return true;
+		} else if (splitInput[0].equals("draw") && !drawRequested) {
+			return false;
+		}
+    	String str = splitInput[0] + splitInput[1];
+//    	str = str.replaceAll("\\s+","");
+
+//    	if(str.length() > 4) {
+//    		return false;
+//    	}
         boolean[] check =  new boolean[4];
 
-    	for(int i = 0; i < str.length(); i++) {
-            String letters = "abcdefgh"; 
+        try {
+			for (int i = 0; i < str.length(); i++) {
+				String letters = "abcdefgh";
 
-            // letter
-            if(i % 2 == 0) {
-            	 for(int z = 0; z < letters.length();z++) {
-                 	if(str.charAt(i)==letters.charAt(z)) {
-             			check[i] = true; 
-             		}
-                 }
-            } else {
-            	// number
-            	String numbers = "12345678";
-            	 for(int z = 0; z < numbers.length(); z++) {
-                  	if(str.charAt(i)==numbers.charAt(z)) {
-              			check[i] = true; 
-              		}
-                  }
-            }
-    	}
-    	for(int i = 0; i < check.length; i++) {
-    		if(check[i] == false) return false; 
-    	}
+				// letter
+				if (i % 2 == 0) {
+					for (int z = 0; z < letters.length(); z++) {
+						if (str.charAt(i) == letters.charAt(z)) {
+							check[i] = true;
+						}
+					}
+				} else {
+					// number
+					String numbers = "12345678";
+					for (int z = 0; z < numbers.length(); z++) {
+						if (str.charAt(i) == numbers.charAt(z)) {
+							check[i] = true;
+						}
+					}
+				}
+			}
+			for (int i = 0; i < check.length; i++) {
+				if (check[i] == false) return false;
+			}
+		} catch (Exception e) {
+        	return false;
+		}
     	return true; 
     }
     
     
     // Convert letter squares to numbers on board
-    private int[] interpretString(String str) {
-    	str = str.replaceAll("\\s+","");
+    private int[] interpretString(String input) {
+    	String[] splitInput = input.split(" ");
+    	String str = splitInput[0] + splitInput[1];
+//    	str = str.replaceAll("\\s+","");
     	int[] result = new int[4]; 
     	for(int i = 0; i < str.length(); i++) {
     		if(str.charAt(i) == 'a') {
@@ -189,14 +212,25 @@ public class ChessBoard {
     		}
     		System.out.printf("%s's Move: %n", playerColor);
 			move = scanner.nextLine();
-			if(checkValidString(move)) {
+			String[] splitMove = move.split(" ");
+			if(checkValidString(move) && splitMove.length > 1) {
 				moveSuccessful = moveSuccessful(interpretString(move), playerColor);
 			}
     		if(move.equals("resign")) {
-    			break;
-    		}
+				System.out.printf("%s wins", (playerColor.equals("White")) ? "Black" : "White");
+				break;
+			}
+			if (splitMove[0].equals("draw") && drawRequested) {
+				break;
+			}
 			System.out.println("");
 			if (moveSuccessful) {
+				// This means that the user inputted proper selected and target locations, and requested draw
+				if (splitMove.length == 3) {
+					drawRequested = true;
+				} else {
+					drawRequested = false;
+				}
 				printLocationBoard();
 				System.out.println("");
 				i++;
