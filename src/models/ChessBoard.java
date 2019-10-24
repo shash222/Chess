@@ -160,9 +160,11 @@ public class ChessBoard {
 			return false;
 		} else if(selected.isValidMove(result[3], result[2], locationBoard)) {
 			// move the piece
-			if (target != null) {
+			if (target != null && !(target instanceof Queen)) {
 				if (playerColor.equalsIgnoreCase("white")) aliveBlackPieces.remove(target);
 				else aliveWhitePieces.remove(target);
+			} else if(target instanceof Queen) {
+				System.out.println("Check Detected."); 
 			}
 			selected.location[0] = result[3];
 			selected.location[1] = result[2];
