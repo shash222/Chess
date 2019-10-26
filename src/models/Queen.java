@@ -31,8 +31,9 @@ public class Queen extends Piece {
 		int incrementX = (r < this.location[0]) ? -1 : 1;
 		int incrementY = (c < this.location[1]) ? -1 : 1;
 		for (int i = this.location[0] + incrementX, j = this.location[1] + incrementY; i != r && j != c; i += incrementX, j += incrementY) {
-			if (locationBoard[j][i] != null) return true;
+			if (locationBoard[i][j] != null) return true;
 		}
+
 		return false;
 	}
 
