@@ -9,8 +9,11 @@ public class Knight extends Piece{
 
     @Override
     boolean isValidMove(int r, int c, Piece[][] locationBoard) {
+    	
         if (Math.abs(r - this.location[0]) == 1 && Math.abs(c - this.location[1]) == 2
-            || Math.abs(r - this.location[0]) == 2 && Math.abs(c - this.location[1]) == 1) return true;
+            || Math.abs(r - this.location[0]) == 2 && Math.abs(c - this.location[1]) == 1) {
+        	return true;
+        }
         return false;
     }
 

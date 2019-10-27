@@ -183,7 +183,8 @@ public class ChessBoard {
 		while (w.hasNext()) {
 			Piece piece = w.next();
 			if (piece.isValidMove(bKing.location[0], bKing.location[1], locationBoard)) {
-				if(print) System.out.println("Check black");
+				if (print)
+					System.out.println("Check black");
 				checkPlayer = "black";
 			}
 		}
@@ -192,13 +193,90 @@ public class ChessBoard {
 		while (b.hasNext()) {
 			Piece piece = b.next();
 			if (piece.isValidMove(wKing.location[0], wKing.location[1], locationBoard)) {
-				if(print) System.out.println("Check white");
+				if (print)
+					System.out.println("Check white");
 				checkPlayer = "white";
 			}
 		}
 
 		return checkPlayer;
 
+	}
+
+	private boolean checkMate(String player) {
+		Set<Piece> tempSet;
+		Piece king;
+		if (player.equalsIgnoreCase("white")) {
+			king = wKing;
+			tempSet = aliveWhitePieces;
+		} else {
+			king = bKing;
+			tempSet = aliveBlackPieces;
+		}
+
+		// check if king can move to safe location
+		int[] selectedLocation = {king.location[0], king.location[1]};
+		for (int i = -1; i <= 1; i++) {
+			for (int j = -1; j <= 1; j++) {
+				if ((king.location[0] + i) >= 0 && (king.location[0] + i) <= locationBoard.length) {
+					if ((king.location[1] + j) >= 0
+							&& (king.location[1] + j) <= locationBoard[king.location[0] + i].length) {
+
+						if (king.isValidMove(king.location[0] + i, king.location[1] + j, locationBoard)
+								&& ((locationBoard[king.location[0] + i][king.location[1] + j] == null)
+										|| locationBoard[king.location[0] + i][king.location[1] + j] != null
+												&& !(locationBoard[king.location[0] + i][king.location[1] + j].color
+														.equalsIgnoreCase(player)))) {
+							Piece temp = locationBoard[king.location[0] + i][king.location[1] + j];
+							locationBoard[king.location[0] + i][king.location[1] + j] = king;
+							king.location[0] = king.location[0] + i;
+							king.location[1] = king.location[1] + j;
+							if (check(false).equalsIgnoreCase(player)) {
+								king.location = selectedLocation;
+								locationBoard[king.location[0] + i][king.location[1] + j] = temp;
+							} else {
+								king.location = selectedLocation;
+								locationBoard[king.location[0] + i][king.location[1] + j] = temp;
+								return false;
+							}
+						}
+
+					}
+				}
+			}
+		}
+
+		// check if other pieces can stop checkmate
+		Iterator<Piece> w = tempSet.iterator();
+		while (w.hasNext()) {
+			Piece piece = w.next();
+			if(piece instanceof King) {
+				continue; 
+			}
+			int[] selectedLocationPiece = {piece.location[0], piece.location[1]};
+			for (int i = 0; i < locationBoard.length; i++) {
+				for (int j = 0; j < locationBoard[i].length; j++) {
+					if (piece.isValidMove(i, j, locationBoard) && (locationBoard[i][j] == null || locationBoard[i][j] != null && !(locationBoard[i][j].color.equalsIgnoreCase(player)))) {
+						Piece temp = locationBoard[i][j];
+						piece.location[0] = i;
+						piece.location[1] = j;
+						locationBoard[i][j] = piece;
+						if (check(false).equalsIgnoreCase(player)) {
+							piece.location[0] = selectedLocationPiece[0];
+							piece.location[1] = selectedLocationPiece[1];
+							locationBoard[i][j] = temp;
+						} else {
+							piece.location = selectedLocation;
+							locationBoard[i][j] = temp;
+							return false;
+						}
+					}
+				}
+			}
+
+		}
+
+		return true;
 	}
 
 	// move the requested piece
@@ -216,18 +294,18 @@ public class ChessBoard {
 					aliveWhitePieces.remove(target);
 			}
 			// move the piece
-			
+
 			int[] selectedLocation = selected.location;
 			selected.location[0] = result[3];
 			selected.location[1] = result[2];
 			locationBoard[result[1]][result[0]] = null;
 			locationBoard[result[3]][result[2]] = selected;
-			String playerChecked = check(false); 
+			String playerChecked = check(false);
 			if (playerChecked.equalsIgnoreCase(playerColor)) { // reverse the move
 				selected.location = selectedLocation;
 				locationBoard[result[1]][result[0]] = selected;
-				if(target != null) {
-					locationBoard[result[3]][result[2]] = target; 
+				if (target != null) {
+					locationBoard[result[3]][result[2]] = target;
 					if (playerColor.equalsIgnoreCase("white"))
 						aliveBlackPieces.add(target);
 					else
@@ -252,10 +330,13 @@ public class ChessBoard {
 			boolean moveSuccessful = false;
 			String move;
 			String playerColor = "";
+			String oppositeColor = ""; 
 			if (i % 2 == 0) {
 				playerColor = "White";
+				oppositeColor = "Black"; 
 			} else {
 				playerColor = "Black";
+				oppositeColor = "White"; 
 			}
 			System.out.printf("%s's Move: %n", playerColor);
 			move = scanner.nextLine();
@@ -264,7 +345,13 @@ public class ChessBoard {
 			if (checkValidString(move) && splitMove.length > 1) {
 				moveSuccessful = moveSuccessful(interpretString(move), playerColor);
 			}
-			while(check(true).equalsIgnoreCase(playerColor)) {
+			if (checkMate(playerColor) || checkMate(oppositeColor)) {
+				printLocationBoard();
+				System.out.println("Game over");
+				scanner.close();
+				break; 
+			}
+			while (check(true).equalsIgnoreCase(playerColor)) {
 				System.out.printf("%s's Move: %n", playerColor);
 				move = scanner.nextLine();
 				splitMove = move.split(" ");

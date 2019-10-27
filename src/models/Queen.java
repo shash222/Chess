@@ -14,7 +14,11 @@ public class Queen extends Piece {
 	private boolean isBlockedAcrossR(int c, Piece[][] locationBoard) {
 		int increment = (c < this.location[1]) ? -1 : 1;
 		for (int i = this.location[1] + increment; i != c; i += increment) {
-			if (locationBoard[this.location[0]][i] != null) return true;
+			if (i < locationBoard.length && i >= 0) {
+				if (locationBoard[this.location[0]][i] != null) return true;
+			} else {
+				break;
+			}
 		}
 		return false;
 	}
@@ -22,7 +26,11 @@ public class Queen extends Piece {
 	private boolean isBlockedAcrossC(int r, Piece[][] locationBoard) {
 		int increment = (r < this.location[0]) ? -1 : 1;
 		for (int i = this.location[0] + increment; i != r; i += increment) {
-			if (locationBoard[i][this.location[1]] != null) return true;
+			if (i < locationBoard.length && i >= 0) {
+				if (locationBoard[i][this.location[1]] != null) return true;
+			} else {
+				break; 
+			}
 		}
 		return false;
 	}
@@ -31,7 +39,11 @@ public class Queen extends Piece {
 		int incrementX = (r < this.location[0]) ? -1 : 1;
 		int incrementY = (c < this.location[1]) ? -1 : 1;
 		for (int i = this.location[0] + incrementX, j = this.location[1] + incrementY; i != r && j != c; i += incrementX, j += incrementY) {
-			if (locationBoard[i][j] != null) return true;
+			if((i < locationBoard.length && j < locationBoard[i].length) && i >= 0 && j >= 0) {
+                if (locationBoard[i][j] != null) return true;
+        	} else {
+        		break; 
+        	}
 		}
 
 		return false;
