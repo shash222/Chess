@@ -21,9 +21,12 @@ public class Bishop extends Piece{
     }
 
     @Override
-    boolean isValidMove(int r, int c, Piece[][] locationBoard) {
+    boolean isValidMove(int r, int c, Piece[][] locationBoard, int moveNumber) {
+        int temp = this.moveNumber;
+        this.moveNumber = moveNumber;
         if (Math.abs(this.location[0] - r) == Math.abs(this.location[1] - c) && !isBlocked(r, c, locationBoard))
             return true;
+        this.moveNumber = temp;
         return false;
     }
 

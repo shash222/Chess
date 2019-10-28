@@ -7,6 +7,7 @@ public abstract class Piece {
 	int[] location = new int[2];
 	String color;
 	boolean moved;
+	int moveNumber;
 
 	Piece(int r, int c, String color) {
 		this.isAlive = true;
@@ -16,7 +17,7 @@ public abstract class Piece {
 		this.moved = false; 
 	}
 	
-	abstract boolean isValidMove(int r, int c, Piece[][] locationBoard);
+	abstract boolean isValidMove(int r, int c, Piece[][] locationBoard, int moveNumber);
 
 
 

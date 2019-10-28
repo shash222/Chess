@@ -50,11 +50,14 @@ public class Queen extends Piece {
 	}
 
 	@Override
-	boolean isValidMove(int r, int c, Piece[][] locationBoard) {
+	boolean isValidMove(int r, int c, Piece[][] locationBoard, int moveNumber) {
+		int temp = this.moveNumber;
+		this.moveNumber = moveNumber;
 		if (r == this.location[0] && !isBlockedAcrossR(c, locationBoard)
 				|| c == this.location[1] && !isBlockedAcrossC(r, locationBoard)) return true;
 		else if (Math.abs(this.location[0] - r) == Math.abs(this.location[1] - c) && !isBlockedDiagonal(r, c, locationBoard))
 			return true;
+		this.moveNumber = temp;
 		return false;
 	}
 
