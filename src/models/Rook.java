@@ -8,10 +8,15 @@ public class Rook extends Piece {
 	}
 
 	private boolean isBlockedAcrossR(int c, Piece[][] locationBoard) {
+	    System.out.println("This: " + this.location[1]);
 		int increment = (c < this.location[1]) ? -1 : 1;
 		for (int i = this.location[1] + increment; i != c; i += increment) {
-			if (i < locationBoard.length && i >= 0) {
-				if (locationBoard[this.location[0]][i] != null) return true;
+		    System.out.println(i);
+			if (i >= 0 && i < locationBoard.length) {
+				if (locationBoard[this.location[0]][i] != null) {
+				    System.out.println("Blocked R " + this.location[0] + "   " + this.location[i] + "   " + locationBoard[this.location[0]][i]);
+				    return true;
+                }
 			} else {
 				break;
 			}
@@ -23,7 +28,10 @@ public class Rook extends Piece {
 		int increment = (r < this.location[0]) ? -1 : 1;
 		for (int i = this.location[0] + increment; i != r; i += increment) {
 			if (i < locationBoard.length && i >= 0) {
-				if (locationBoard[i][this.location[1]] != null) return true;
+				if (locationBoard[i][this.location[1]] != null) {
+                    System.out.println("Blocked C");
+                    return true;
+                }
 			} else {
 				break; 
 			}

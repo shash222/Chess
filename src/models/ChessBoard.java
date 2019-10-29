@@ -30,22 +30,22 @@ public class ChessBoard {
 		locationBoard[0][7] = new Rook(0, 7, "black");
 		locationBoard[7][0] = new Rook(7, 0, "white");
 		locationBoard[7][7] = new Rook(7, 7, "white");
-
-		locationBoard[7][1] = new Knight(7, 1, "white");
-		locationBoard[7][6] = new Knight(7, 6, "white");
-		locationBoard[0][6] = new Knight(0, 6, "black");
-		locationBoard[0][1] = new Knight(0, 1, "black");
-
-		locationBoard[0][2] = new Bishop(0, 2, "black");
-		locationBoard[0][5] = new Bishop(0, 5, "black");
-		locationBoard[7][2] = new Bishop(7, 2, "white");
-		locationBoard[7][5] = new Bishop(7, 5, "white");
-
+//
+//		locationBoard[7][1] = new Knight(7, 1, "white");
+//		locationBoard[7][6] = new Knight(7, 6, "white");
+//		locationBoard[0][6] = new Knight(0, 6, "black");
+//		locationBoard[0][1] = new Knight(0, 1, "black");
+//
+//		locationBoard[0][2] = new Bishop(0, 2, "black");
+//		locationBoard[0][5] = new Bishop(0, 5, "black");
+//		locationBoard[7][2] = new Bishop(7, 2, "white");
+//		locationBoard[7][5] = new Bishop(7, 5, "white");
+//
 		locationBoard[0][4] = bKing;
 		locationBoard[7][4] = wKing;
-
-		locationBoard[0][3] = new Queen(0, 3, "black");
-		locationBoard[7][3] = new Queen(7, 3, "white");
+//
+//		locationBoard[0][3] = new Queen(0, 3, "black");
+//		locationBoard[7][3] = new Queen(7, 3, "white");
 
 		for (int i = 0; i <= 1; i++) {
 			for (int j = 0; j < colorBoard.length; j++) {
@@ -191,21 +191,21 @@ public class ChessBoard {
 		String checkPlayer = "";
 		while (w.hasNext()) {
 			Piece piece = w.next();
-			if (piece.isValidMove(bKing.location[0], bKing.location[1], locationBoard, moveCounter)) {
-				if (print)
-					System.out.println("Check black");
-				checkPlayer = "black";
-			}
+//			if (piece.isValidMove(bKing.location[0], bKing.location[1], locationBoard, moveCounter)) {
+//				if (print)
+//					System.out.println("Check black");
+//				checkPlayer = "black";
+//			}
 		}
 
 		Iterator<Piece> b = aliveBlackPieces.iterator();
 		while (b.hasNext()) {
 			Piece piece = b.next();
-			if (piece.isValidMove(wKing.location[0], wKing.location[1], locationBoard, moveCounter)) {
-				if (print)
-					System.out.println("Check white");
-				checkPlayer = "white";
-			}
+//			if (piece.isValidMove(wKing.location[0], wKing.location[1], locationBoard, moveCounter)) {
+//				if (print)
+//					System.out.println("Check white");
+//				checkPlayer = "white";
+//			}
 		}
 
 		return checkPlayer;
@@ -296,6 +296,7 @@ public class ChessBoard {
 		Piece target = locationBoard[result[3]][result[2]];
         System.out.println("Selected: " + result[1] + "   " + result[0] + "   " + selected);
         System.out.println("target: " + result[3] + "   " + result[2] + "   " + target);
+//		System.out.println(selected.isValidMove(result[3], result[2], locationBoard, moveCounter));
 		if (selected == null || !selected.color.equalsIgnoreCase(playerColor)
 				|| target != null && target.color.equals(selected.color)) {
 			return false;
@@ -327,12 +328,16 @@ public class ChessBoard {
 			if (selected instanceof King && (((King) selected).castle)) {
 				 if (selected.location[1] == 1) {
 				 	locationBoard[selected.location[0]][2] = locationBoard[selected.location[0]][0];
+				 	locationBoard[selected.location[0]][2].location[1] = 2;
 				 	locationBoard[selected.location[0]][0] = null;
+				 	locationBoard[selected.location[0]][4] = null;
 				 } else {
 					 locationBoard[selected.location[0]][5] = locationBoard[selected.location[0]][7];
+					 locationBoard[selected.location[0]][5].location[1] = 5;
 					 locationBoard[selected.location[0]][7] = null;
+					 locationBoard[selected.location[0]][4] = null;
 				 }
-			} else if (selected instanceof Pawn && selected.location[0] == 0 || selected.location[0] == 7) {
+			} else if (selected instanceof Pawn && (selected.location[0] == 0 || selected.location[0] == 7)) {
 				Piece promotedPiece;
 				if (promotionPiece == null || promotionPiece.equalsIgnoreCase("Q")) {
 					promotedPiece = new Queen(selected.location[0], selected.location[1], selected.color);
