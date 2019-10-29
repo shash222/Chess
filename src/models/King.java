@@ -42,6 +42,10 @@ public class King extends Piece{
             return true;
         }
         this.moveNumber = temp;
+<<<<<<< HEAD
+=======
+        System.out.println("Black move failed: " + r + "   " +  c);
+>>>>>>> 1c825ca2dd96048dfba030cc1b5dfba34e9fbf4f
         return false;
     }
 }

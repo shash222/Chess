@@ -191,9 +191,7 @@ public class ChessBoard {
 		String checkPlayer = "";
 		while (w.hasNext()) {
 			Piece piece = w.next();
-			boolean validMove = piece.isValidMove(bKing.location[0], bKing.location[1], locationBoard, moveCounter);
-//  			if (print) System.out.println(piece + "   " + validMove + "   white");
-			if (validMove) {
+			if (piece.isValidMove(bKing.location[0], bKing.location[1], locationBoard, moveCounter)) {
 				if (print)
 					System.out.println("Check black");
 				checkPlayer = "black";
@@ -203,9 +201,7 @@ public class ChessBoard {
 		Iterator<Piece> b = aliveBlackPieces.iterator();
 		while (b.hasNext()) {
 			Piece piece = b.next();
-            boolean validMove = piece.isValidMove(wKing.location[0], wKing.location[1], locationBoard, moveCounter);
-//            if (print) System.out.println(piece + "   " + validMove + "   black");
-			if (validMove) {
+			if (piece.isValidMove(wKing.location[0], wKing.location[1], locationBoard, moveCounter)) {
 				if (print)
 					System.out.println("Check white");
 				checkPlayer = "white";
@@ -420,7 +416,6 @@ public class ChessBoard {
 				if (checkValidString(move) && splitMove.length > 1) {
 					interpretedString = interpretString(move);
 					moveSuccessful = moveSuccessful(interpretedString, playerColor);
-					System.out.println("Move successful: " + moveSuccessful);
 				}
 			}
 			if (move.equals("resign")) {
@@ -442,6 +437,9 @@ public class ChessBoard {
 				} else {
 					drawRequested = false;
 				}
+				// selected.moveNumber is reassigned here on purpose (first assigned about 20 lines above)
+				// NEEDS TO STAY
+				selected.moveNumber = moveCounter;
 				printLocationBoard();
 				System.out.println("");
 				moveCounter++;
