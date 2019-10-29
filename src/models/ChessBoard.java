@@ -1,3 +1,7 @@
+/**
+ * @author Salman Hashmi
+ * @author Mohammed Alnadi
+ */
 package models;
 
 import java.util.Arrays;
@@ -5,9 +9,19 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Set;
-
+/**
+ * Chessboard object, serves as Controller for Chess Game
+ */
 public class ChessBoard {
 
+	/**
+	 * Chessboard is an 8x8 matrix, where locationBoard is the placement of each piece on the board, colorBoard is used
+	 * to keep track of which spot on the board is black and which is white, aliveWhitePieces and aliveBlackPieces keeps
+	 * track of all pieces on each side that are alive. bKing and wKing keep track of the king pieces for each side.
+	 * promotablePieces is a set of all of the legal promotions that can occur for a pawn, drawRequested keeps track of
+	 * whether a draw was requested by a player so that if the other player enters "draw" in the next turn, the game
+	 * ends.
+	 */
 	private Piece[][] locationBoard = new Piece[8][8];
 	private String[][] colorBoard = new String[8][8];
 	private Set<Piece> aliveWhitePieces = new HashSet();
@@ -21,6 +35,9 @@ public class ChessBoard {
 	String promotionPiece;
 
 
+	/**
+	 * Constructor, defines what pieces are originally placed where, and what color each spot is
+	 */
 	public ChessBoard() {
 		for (int i = 0; i <= 7; i++) {
 			locationBoard[1][i] = new Pawn(1, i, "black");
@@ -30,22 +47,22 @@ public class ChessBoard {
 		locationBoard[0][7] = new Rook(0, 7, "black");
 		locationBoard[7][0] = new Rook(7, 0, "white");
 		locationBoard[7][7] = new Rook(7, 7, "white");
-//
-//		locationBoard[7][1] = new Knight(7, 1, "white");
-//		locationBoard[7][6] = new Knight(7, 6, "white");
-//		locationBoard[0][6] = new Knight(0, 6, "black");
-//		locationBoard[0][1] = new Knight(0, 1, "black");
-//
-//		locationBoard[0][2] = new Bishop(0, 2, "black");
-//		locationBoard[0][5] = new Bishop(0, 5, "black");
-//		locationBoard[7][2] = new Bishop(7, 2, "white");
-//		locationBoard[7][5] = new Bishop(7, 5, "white");
-//
+
+		locationBoard[7][1] = new Knight(7, 1, "white");
+		locationBoard[7][6] = new Knight(7, 6, "white");
+		locationBoard[0][6] = new Knight(0, 6, "black");
+		locationBoard[0][1] = new Knight(0, 1, "black");
+
+		locationBoard[0][2] = new Bishop(0, 2, "black");
+		locationBoard[0][5] = new Bishop(0, 5, "black");
+		locationBoard[7][2] = new Bishop(7, 2, "white");
+		locationBoard[7][5] = new Bishop(7, 5, "white");
+
 		locationBoard[0][4] = bKing;
 		locationBoard[7][4] = wKing;
-//
-//		locationBoard[0][3] = new Queen(0, 3, "black");
-//		locationBoard[7][3] = new Queen(7, 3, "white");
+
+		locationBoard[0][3] = new Queen(0, 3, "black");
+		locationBoard[7][3] = new Queen(7, 3, "white");
 
 		for (int i = 0; i <= 1; i++) {
 			for (int j = 0; j < colorBoard.length; j++) {
@@ -74,6 +91,9 @@ public class ChessBoard {
 		}
 	}
 
+	/**
+	 * Prints the chessboard
+	 */
 	public void printLocationBoard() {
 		for (int i = 0; i < locationBoard.length; i++) {
 			if (i != 0)
@@ -94,7 +114,17 @@ public class ChessBoard {
 
 	}
 
-	// Check if input is syntactically valid
+
+	/**
+	 * 	Checks if input is syntactically valid. Checks the "number of inputs" by splitting the input string by a single
+	 * 	space, and if the number of inputs is greater than 3, the input is illegal. The conditions for the input being
+	 * 	legal are as follows:
+	 * 	 - number of inputs is 1, and equates to "draw" only if draw was requested in the previous turn, or
+	 * 	 - number of inputs is 2, and the first character of each input is a-h, and the second character is 1-8, or
+	 * 	 - number of inputs is 3 where first two inputs correspond to when the number of inputs is 2
+	 * 	 	- the piece being moved is a pawn, and is being promoted and the desired promoted value (third input) exists, or
+	 * 	 	- the third input requests "draw?"
+\ 	 */
 	private boolean checkValidString(String input) {
 		// Splits inputted string by space
 		String[] splitInput = input.split(" ");
@@ -151,7 +181,11 @@ public class ChessBoard {
   		return true;
 	}
 
-	// Convert letter squares to numbers on board
+	/**
+	 * Convert input values to indices to work with on the board
+	 * @param input String representing move desired
+	 * @return int array of size 4 with the input values converted to indices to work with on the board
+	 */
 	private int[] interpretString(String input) {
 		String[] splitInput = input.split(" ");
 		String str = splitInput[0] + splitInput[1];
@@ -185,6 +219,11 @@ public class ChessBoard {
 
 	}
 
+	/**
+	 * Determines if King is in check
+	 * @param print boolean whether to print if piece is in check or not
+	 * @return String describing what player is in check, if any
+	 */
 	private String check(boolean print) {
 
 		Iterator<Piece> w = aliveWhitePieces.iterator();
@@ -212,6 +251,11 @@ public class ChessBoard {
 
 	}
 
+	/**
+	 * Determines if player is in checkmate
+	 * @param player String representing player that we are looking for to determine if it is in check
+	 * @return boolean whether player is in checkmate
+	 */
 	private boolean checkMate(String player) {
 		Set<Piece> tempSet;
 		Piece king;
@@ -290,7 +334,12 @@ public class ChessBoard {
 		return true;
 	}
 
-	// move the requested piece
+	/**
+	 * Determines if the piece can succesfully be moved, and if so, moves it
+	 * @param result the converted value, from input string to indices that can be worked with
+	 * @param playerColor color of player moving piece
+	 * @return boolean to determine if move was successful or not
+	 */
 	private boolean moveSuccessful(int[] result, String playerColor) {
 		Piece selected = locationBoard[result[1]][result[0]];
 		Piece target = locationBoard[result[3]][result[2]];
@@ -379,6 +428,9 @@ public class ChessBoard {
 		return false;
 	}
 
+	/**
+	 * Primary logic of game, runs until Checkmate, Draw or Resignation
+	 */
 	public void play() {
 		Scanner scanner = new Scanner(System.in);
 		printLocationBoard();

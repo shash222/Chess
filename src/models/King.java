@@ -1,13 +1,35 @@
+/**
+ * @author Salman Hashmi
+ * @author Mohammed Alnadi
+ */
 package models;
 
+/**
+ * King Piece implementation
+ */
 public class King extends Piece{
+    /**
+     * Boolean flag to tell controller if King is attempting to castle
+     */
     boolean castle;
 
+    /**
+     * Constructor
+     * @param r row on which the Piece currently resides
+     * @param c column on which the Piece currently resides
+     * @param color color of current piece
+     */
     King(int r, int c, String color) {
         super(r, c, color);
         this.name = color.equals("white") ? "wK" : "bK";
     }
 
+    /**
+     * Checks if King can successfully castle
+     * @param c column on which the player is attempting to move the piece
+     * @param locationBoard chessboard with Piece locations
+     * @return boolean determining if piece is blocked or not
+     */
     private boolean castleIsBlocked(int c, Piece[][] locationBoard) {
         int increment = (c < this.location[1]) ? -1 : 1;
         for (int i = this.location[1] + increment; i != c; i += increment) {
@@ -21,6 +43,14 @@ public class King extends Piece{
         return false;
     }
 
+    /**
+     * Overrides isValidMove abstract method from Piece class
+     * @param r row on which the player is attempting to move the piece
+     * @param c column on which the player is attempting to move the piece
+     * @param locationBoard chessboard with Piece locations
+     * @param moveNumber current move number to assign to piece if move is successful
+     * @return boolean to determine whether move was successful
+     */
     @Override
     boolean isValidMove(int r, int c, Piece[][] locationBoard, int moveNumber) {
         // Haven't handled check positions yet

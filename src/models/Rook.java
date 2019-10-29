@@ -1,12 +1,31 @@
+/**
+ * @author Salman Hashmi
+ * @author Mohammed Alnadi
+ */
 package models;
 
+/**
+ * Rook Piece implementation
+ */
 public class Rook extends Piece {
 
-	Rook(int r, int c, String color) {
+    /**
+     * Constructor
+     * @param r row on which the Piece currently resides
+     * @param c column on which the Piece currently resides
+     * @param color color of current piece
+     */
+    Rook(int r, int c, String color) {
 		super(r, c, color);
 		this.name = color.equals("white") ? "wR" : "bR";
 	}
 
+    /**
+     * Checks if piece is blocked when moving horizontally
+     * @param c column on which the player is attempting to move the piece
+     * @param locationBoard chessboard with Piece locations
+     * @return boolean determining if piece is blocked or not
+     */
 	private boolean isBlockedAcrossR(int c, Piece[][] locationBoard) {
 	    System.out.println("This: " + this.location[1]);
 		int increment = (c < this.location[1]) ? -1 : 1;
@@ -24,6 +43,12 @@ public class Rook extends Piece {
 		return false;
 	}
 
+    /**
+     * Checks if piece is blocked when moving horizontally
+     * @param r row on which the player is attempting to move the piece
+     * @param locationBoard chessboard with Piece locations
+     * @return boolean determining if piece is blocked or not
+     */
 	private boolean isBlockedAcrossC(int r, Piece[][] locationBoard) {
 		int increment = (r < this.location[0]) ? -1 : 1;
 		for (int i = this.location[0] + increment; i != r; i += increment) {
@@ -39,6 +64,14 @@ public class Rook extends Piece {
 		return false;
 	}
 
+    /**
+     * Overrides isValidMove abstract method from Piece class
+     * @param r row on which the player is attempting to move the piece
+     * @param c column on which the player is attempting to move the piece
+     * @param locationBoard chessboard with Piece locations
+     * @param moveNumber current move number to assign to piece if move is successful
+     * @return boolean to determine whether move was successful
+     */
 	@Override
 	boolean isValidMove(int r, int c, Piece[][] locationBoard, int moveNumber) {
 		int temp = this.moveNumber;
