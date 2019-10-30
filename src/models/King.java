@@ -4,6 +4,9 @@
  */
 package models;
 
+import java.util.Iterator;
+import java.util.Set;
+
 /**
  * King Piece implementation
  */
@@ -21,7 +24,27 @@ public class King extends Piece{
      */
     King(int r, int c, String color) {
         super(r, c, color);
-        this.name = color.equals("white") ? "wK" : "bK";
+                this.name = color.equals("white") ? "wK" : "bK";
+            }
+
+            public boolean castlingThroughCheck(Set<Piece> aliveEnemyPieces, int[] startLocation, Piece[][] locationBoard, int moveCounter) {
+                Iterator<Piece> w = aliveEnemyPieces.iterator();
+                int increment = (startLocation[1] < this.location[1]) ? -1 : 1;
+//        System.out.println(startLocation[1] + "   " + this.location[1]);
+//        System.out.println(increment);
+//        System.out.println(aliveEnemyPieces.size());
+                while (w.hasNext()) {
+                    Piece piece = w.next();
+//            System.out.println(piece);
+                    for (int i = this.location[1]; i != startLocation[1]; i += increment) {
+//                System.out.println(piece + " cannot go");
+                if (piece.isValidMove(this.location[0], i, locationBoard, moveCounter)) {
+//                    System.out.println("return true: " + piece + "  " + this.location[0] + "   " + i);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -33,7 +56,7 @@ public class King extends Piece{
     private boolean castleIsBlocked(int c, Piece[][] locationBoard) {
         int increment = (c < this.location[1]) ? -1 : 1;
         for (int i = this.location[1] + increment; i != c; i += increment) {
-            System.out.println(i + "    " + c);
+//            System.out.println(i + "    " + c);
             if (i < locationBoard.length && i >= 0) {
                 if (locationBoard[this.location[0]][i] != null) return true;
             } else {

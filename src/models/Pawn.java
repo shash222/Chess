@@ -60,6 +60,7 @@ public class Pawn extends Piece {
 			}
 
 		} else {
+//			System.out.printf("Pawn: %d == %d %b, %d == %d %b%n", c, this.location[1], c == this.location[1], r, this.location[0] + 1, r == this.location[0] + 1);
 			if (c == this.location[1] && r == this.location[0] + 1 && locationBoard[r][c] == null) return true;
 			if (c == this.location[1] && r == this.location[0] + 2 && !moved && locationBoard[r - 1][c] == null  && locationBoard[r][c] == null) {
 				movedTwo = true;
@@ -76,6 +77,8 @@ public class Pawn extends Piece {
 				}
 			}
 		}
+//		System.out.printf("Pawn: %d == %d %b, %d == %d %b%n", c, this.location[1], c == this.location[1], r, this.location[0] + 1, r == this.location[0] + 1);
+//		System.out.println("Pawn not valid move");
 		this.moveNumber = temp;
 		return false;
 

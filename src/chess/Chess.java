@@ -25,10 +25,4 @@ public class Chess {
 		ChessBoard chessBoard = new ChessBoard();
 		chessBoard.play();
 	}
-
-
-		// Check if desired location has a piece of the same color as the piece being moved
-		// if so, move is invalid, if not, check if valid move using overridden method
-	
-
 }

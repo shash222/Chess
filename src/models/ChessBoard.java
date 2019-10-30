@@ -230,21 +230,21 @@ public class ChessBoard {
 		String checkPlayer = "";
 		while (w.hasNext()) {
 			Piece piece = w.next();
-//			if (piece.isValidMove(bKing.location[0], bKing.location[1], locationBoard, moveCounter)) {
-//				if (print)
-//					System.out.println("Check black");
-//				checkPlayer = "black";
-//			}
+			if (piece.isValidMove(bKing.location[0], bKing.location[1], locationBoard, moveCounter)) {
+				if (print)
+					System.out.println("Check black");
+				checkPlayer = "black";
+			}
 		}
 
 		Iterator<Piece> b = aliveBlackPieces.iterator();
 		while (b.hasNext()) {
 			Piece piece = b.next();
-//			if (piece.isValidMove(wKing.location[0], wKing.location[1], locationBoard, moveCounter)) {
-//				if (print)
-//					System.out.println("Check white");
-//				checkPlayer = "white";
-//			}
+			if (piece.isValidMove(wKing.location[0], wKing.location[1], locationBoard, moveCounter)) {
+				if (print)
+					System.out.println("Check white");
+				checkPlayer = "white";
+			}
 		}
 
 		return checkPlayer;
@@ -252,14 +252,24 @@ public class ChessBoard {
 	}
 
 	/**
+	 * Checks if there is the player has a piece that can block the checkmate
+	 * @param playerColor player's turn color
+	 * @return whether checkmate can be blocked by any of the player's pieces
+	 */
+	private boolean canBlockCheckmate(String playerColor) {
+
+		return false;
+	}
+
+	/**
 	 * Determines if player is in checkmate
-	 * @param player String representing player that we are looking for to determine if it is in check
+	 * @param playerColor String representing player that we are looking for to determine if it is in check
 	 * @return boolean whether player is in checkmate
 	 */
-	private boolean checkMate(String player) {
+	private boolean checkMate(String playerColor) {
 		Set<Piece> tempSet;
 		Piece king;
-		if (player.equalsIgnoreCase("white")) {
+		if (playerColor.equalsIgnoreCase("white")) {
 			king = wKing;
 			tempSet = aliveWhitePieces;
 		} else {
@@ -279,12 +289,12 @@ public class ChessBoard {
 								&& ((locationBoard[king.location[0] + i][king.location[1] + j] == null)
 										|| locationBoard[king.location[0] + i][king.location[1] + j] != null
 												&& !(locationBoard[king.location[0] + i][king.location[1] + j].color
-														.equalsIgnoreCase(player)))) {
+														.equalsIgnoreCase(playerColor)))) {
 							Piece temp = locationBoard[king.location[0] + i][king.location[1] + j];
 							locationBoard[king.location[0] + i][king.location[1] + j] = king;
 							king.location[0] = king.location[0] + i;
 							king.location[1] = king.location[1] + j;
-							if (check(false).equalsIgnoreCase(player)) {
+							if (check(false).equalsIgnoreCase(playerColor)) {
 								king.location[0] = selectedLocation[0];
 								king.location[1] = selectedLocation[1];
 								locationBoard[king.location[0] + i][king.location[1] + j] = temp;
@@ -295,7 +305,6 @@ public class ChessBoard {
 								return false;
 							}
 						}
-
 					}
 				}
 			}
@@ -305,30 +314,39 @@ public class ChessBoard {
 		Iterator<Piece> w = tempSet.iterator();
 		while (w.hasNext()) {
 			Piece piece = w.next();
-			if(piece instanceof King) {
-				continue; 
+			if (piece instanceof King) {
+				continue;
 			}
-			int[] selectedLocationPiece = {piece.location[0], piece.location[1]};
+//			int[] selectedLocationPiece = {piece.location[0], piece.location[1]};
 			for (int i = 0; i < locationBoard.length; i++) {
 				for (int j = 0; j < locationBoard[i].length; j++) {
-					if (piece.isValidMove(i, j, locationBoard, moveCounter) && (locationBoard[i][j] == null || locationBoard[i][j] != null && !(locationBoard[i][j].color.equalsIgnoreCase(player)))) {
-						Piece temp = locationBoard[i][j];
-						piece.location[0] = i;
-						piece.location[1] = j;
-						locationBoard[i][j] = piece;
-						if (check(false).equalsIgnoreCase(player)) {
-							piece.location[0] = selectedLocationPiece[0];
-							piece.location[1] = selectedLocationPiece[1];
-							locationBoard[i][j] = temp;
-						} else {
-							piece.location = selectedLocation;
-							locationBoard[i][j] = temp;
+
+					// The following block of code seems like it's redundant and buggy, so commented it out and replaced it with what seems to be equivalent?
+
+//					if (piece.isValidMove(i, j, locationBoard, moveCounter) && (locationBoard[i][j] == null || locationBoard[i][j] != null && !(locationBoard[i][j].color.equalsIgnoreCase(player)))) {
+//						Piece temp = locationBoard[i][j];
+//						piece.location[0] = i;
+//						piece.location[1] = j;
+//						locationBoard[i][j] = piece;
+//						if (check(false).equalsIgnoreCase(player)) {
+//							piece.location[0] = selectedLocationPiece[0];
+//							piece.location[1] = selectedLocationPiece[1];
+//							locationBoard[i][j] = temp;
+//						} else {
+//							piece.location[0] = selectedLocationPiece[0];
+//							piece.location[1] = selectedLocationPiece[1];
+//							return false;
+//						}
+					// replaced above commented-out block of code with if block below
+						if ((piece.isValidMove(i, j, locationBoard, moveCounter) && (locationBoard[i][j] == null || locationBoard[i][j] != null && !(locationBoard[i][j].color.equalsIgnoreCase(playerColor)))) && !check(false).equalsIgnoreCase(playerColor)) {
 							return false;
-						}
 					}
 				}
 			}
 
+		}
+		if (canBlockCheckmate(playerColor)) {
+			return false;
 		}
 
 		return true;
@@ -343,10 +361,7 @@ public class ChessBoard {
 	private boolean moveSuccessful(int[] result, String playerColor) {
 		Piece selected = locationBoard[result[1]][result[0]];
 		Piece target = locationBoard[result[3]][result[2]];
-        System.out.println("Selected: " + result[1] + "   " + result[0] + "   " + selected);
-        System.out.println("target: " + result[3] + "   " + result[2] + "   " + target);
-//		System.out.println(selected.isValidMove(result[3], result[2], locationBoard, moveCounter));
-		if (selected == null || !selected.color.equalsIgnoreCase(playerColor)
+   		if (selected == null || !selected.color.equalsIgnoreCase(playerColor)
 				|| target != null && target.color.equals(selected.color)) {
 			return false;
 		} else if (selected.isValidMove(result[3], result[2], locationBoard, moveCounter)) {
@@ -374,7 +389,19 @@ public class ChessBoard {
 			selected.location[1] = result[2];
 			locationBoard[result[1]][result[0]] = null;
 			locationBoard[result[3]][result[2]] = selected;
+
+			// Used in castlingThroughCheck method
+			int[] startLocation = {result[1], result[0]};
 			if (selected instanceof King && (((King) selected).castle)) {
+				if (((King) selected).castlingThroughCheck(selected.color.equalsIgnoreCase("white")
+														? aliveBlackPieces
+														: aliveWhitePieces, startLocation, locationBoard, moveCounter)) {
+					selected.location[0] = result[1];
+					selected.location[1] = result[0];
+					locationBoard[result[3]][result[2]] = null;
+					locationBoard[result[1]][result[0]] = selected;
+					return false;
+				}
 				 if (selected.location[1] == 1) {
 				 	locationBoard[selected.location[0]][2] = locationBoard[selected.location[0]][0];
 				 	locationBoard[selected.location[0]][2].location[1] = 2;
@@ -386,7 +413,9 @@ public class ChessBoard {
 					 locationBoard[selected.location[0]][7] = null;
 					 locationBoard[selected.location[0]][4] = null;
 				 }
-			} else if (selected instanceof Pawn && (selected.location[0] == 0 || selected.location[0] == 7)) {
+				 return true;
+			}
+			if (selected instanceof Pawn && (selected.location[0] == 0 || selected.location[0] == 7)) {
 				Piece promotedPiece;
 				if (promotionPiece == null || promotionPiece.equalsIgnoreCase("Q")) {
 					promotedPiece = new Queen(selected.location[0], selected.location[1], selected.color);
@@ -455,14 +484,13 @@ public class ChessBoard {
 			if (checkValidString(move) && splitMove.length > 1) {
 				interpretedString = interpretString(move);
 				selected = locationBoard[interpretedString[1]][interpretedString[0]];
-				// this is to give the selected piece a moveNumber for pawn to check if it can enpassant
-				// selected.moveNumber is also assigned further down on purpose to update value
-				// NEEDS TO STAY
 				moveSuccessful = moveSuccessful(interpretedString, playerColor);
 			}
-			if (checkMate(playerColor) || checkMate(oppositeColor)) {
+			boolean playerCheckmated = checkMate(playerColor);
+			if (playerCheckmated || checkMate(oppositeColor)) {
 				printLocationBoard();
-				System.out.println("Game over");
+				System.out.println("Checkmate");
+				System.out.printf("%s Wins", (playerCheckmated) ? oppositeColor : playerColor);
 				scanner.close();
 				break;
 			}
@@ -494,9 +522,7 @@ public class ChessBoard {
 				} else {
 					drawRequested = false;
 				}
-				// selected.moveNumber is reassigned here on purpose (first assigned about 20 lines above)
-				// NEEDS TO STAY
-				selected.moveNumber = moveCounter;
+  				selected.moveNumber = moveCounter;
 				printLocationBoard();
 				System.out.println("");
 				moveCounter++;

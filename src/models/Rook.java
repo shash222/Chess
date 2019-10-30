@@ -27,13 +27,13 @@ public class Rook extends Piece {
      * @return boolean determining if piece is blocked or not
      */
 	private boolean isBlockedAcrossR(int c, Piece[][] locationBoard) {
-	    System.out.println("This: " + this.location[1]);
+//	    System.out.println("This: " + this.location[1]);
 		int increment = (c < this.location[1]) ? -1 : 1;
 		for (int i = this.location[1] + increment; i != c; i += increment) {
-		    System.out.println(i);
+//		    System.out.println(i);
 			if (i >= 0 && i < locationBoard.length) {
 				if (locationBoard[this.location[0]][i] != null) {
-				    System.out.println("Blocked R " + this.location[0] + "   " + this.location[i] + "   " + locationBoard[this.location[0]][i]);
+//				    System.out.println("Blocked R " + this.location[0] + "   " + this.location[i] + "   " + locationBoard[this.location[0]][i]);
 				    return true;
                 }
 			} else {
@@ -54,7 +54,7 @@ public class Rook extends Piece {
 		for (int i = this.location[0] + increment; i != r; i += increment) {
 			if (i < locationBoard.length && i >= 0) {
 				if (locationBoard[i][this.location[1]] != null) {
-                    System.out.println("Blocked C");
+//                    System.out.println("Blocked C");
                     return true;
                 }
 			} else {
