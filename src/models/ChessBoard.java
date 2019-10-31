@@ -218,9 +218,9 @@ public class ChessBoard {
 		int[] selectedLocation = {king.location[0], king.location[1]};
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
-				if ((king.location[0] + i) >= 0 && (king.location[0] + i) <= locationBoard.length) {
+				if ((king.location[0] + i) >= 0 && (king.location[0] + i) < locationBoard.length) {
 					if ((king.location[1] + j) >= 0
-							&& (king.location[1] + j) <= locationBoard[king.location[0] + i].length) {
+							&& (king.location[1] + j) < locationBoard[king.location[0] + i].length) {
 
 						if (king.isValidMove(king.location[0] + i, king.location[1] + j, locationBoard)
 								&& ((locationBoard[king.location[0] + i][king.location[1] + j] == null)
@@ -232,10 +232,13 @@ public class ChessBoard {
 							king.location[0] = king.location[0] + i;
 							king.location[1] = king.location[1] + j;
 							if (check(false).equalsIgnoreCase(player)) {
-								king.location = selectedLocation;
+								king.location[0] = selectedLocation[0];
+								king.location[1] = selectedLocation[1];
+
 								locationBoard[king.location[0] + i][king.location[1] + j] = temp;
 							} else {
-								king.location = selectedLocation;
+								king.location[0] = selectedLocation[0];
+								king.location[1] = selectedLocation[1];
 								locationBoard[king.location[0] + i][king.location[1] + j] = temp;
 								return false;
 							}
